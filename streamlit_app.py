@@ -29,6 +29,7 @@ if st.button("Analyze Sentiment"):
             result = response.json()
 
             # Display result
+
             sentiment = result['prediction']
             # confidence = result['confidence']
             if 'positive' in sentiment or 'negative' in sentiment:
@@ -36,4 +37,3 @@ if st.button("Analyze Sentiment"):
             else:
                 st.error(f'Sentiment : {sentiment}')
             # st.metric(Label='Confidence',value=confidence)
-            
