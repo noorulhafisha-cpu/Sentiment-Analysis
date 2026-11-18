@@ -3,13 +3,13 @@ import numpy as np
 from preprocess import process_review
 from flask import Flask, request, jsonify
 
-app = Flask(__name__)
 
-model = joblib.load('model.joblib')  # Loading the saved model
-vectorizer = joblib.load('vectorizer.joblib')  # Loading the saved TF-IDF Vectorizer
+app=Flask(__name__)
+model=joblib.load('model.joblib') #Loading the saved model
+vectorizer=joblib.load('vectorizer.joblib') # Loading the saved TF-IDF vectorizer
+
 
 @app.route("/predict", methods=["POST"])  # Whenever user POSTs data to "/predict", call this function.
-
 def predict():
     data = request.get_json()  # Reading the incoming JSON data.
     
@@ -19,16 +19,13 @@ def predict():
     
     process_rev = vectorizer.transform([process_rev])  # Extract features from the review
 
-    prediction = model.predict(process_rev) # Predict the sentiment
+    prediction=model.predict(process_rev) # predict the sentiment
 
-    return jsonify({"prediction": "positive" if prediction[0] == "1" else "negative"}) # Output the sentiment. jsonify is used to convert python dict to JSON object
+    return jsonify({"prediction":"positive" if prediction[0]=='1' else "negative"}) # output  the sentiment jsonify is used to convert the python dict into JSON object
 
-@app.route("/health", methods=['GET']) # Used to check if the server is running. It'll output {"status":"ok"} if server is running.
-
+@app.route("/health", methods=["GET"])
 def health():
     return jsonify({"status":"ok"})
 
 if __name__ == "__main__":
-    #app.run(debug=True, host="0.0.0.0", port = 5000) # Host:0.0.0.0 means any computer can connect to this host
-    import os
-    app.run(host="127.0.0.1", port=int(os.environ.get("PORT",5000)))
+     import os
